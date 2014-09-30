@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "LogItems";
+}
+
+<h2>LogItems</h2>
+
+<div class="row" ng-app="myApp">
+    <div ng-controller="MyCtrl">
+
+        <table class="table">
+            <tr>
+                <td style="width:50%" align="left">
+                    <input type="text" class="form-control" placeholder="" ng-model="filterText" />
+                </td>
+                <td>
+                    <a class="btn btn-primary" ng-click="refresh()" >Search</a>
+                </td>
+        </table>
+
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+
+
+        @*<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch demo modal
+        </button>*@
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Log Item Details</h4>
+                    </div>
+
+
+                    <div class="modal-body">
+                        <dl class="dl-horizontal">
+                            <dt>Module </dt>
+                            <dd>{{Module}}</dd>
+                            <dt>LoggedOn</dt>
+                            <dd>{{LoggedOn}}</dd>
+                            <dt>LogLevel</dt>
+                            <dd>{{LogLevel}}</dd>
+                            <dt>UserName</dt>
+                            <dd>{{UserName}}</dd>
+                            <dt>Message</dt>
+                            <dd>{{Message}}</dd>
+                        </dl>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
+
+    <style>
+        .gridStyle {
+            border: 1px solid rgb(212,212,212);
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+<script type="text/javascript" src="http://angular-ui.github.com/ng-grid/lib/ng-grid.debug.js"></script>*@
+
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/ng-grid.min.js"></script>
+    <script src="~/Scripts/Controllers/NGController.js"></script>
+}
