@@ -10,15 +10,14 @@ using System.Web.Mvc;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
-using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Web.OData.Routing;
 
 namespace AngularJSDemo.Controllers
 {
     public class LogItemsController : ODataController
     {
         LogItemsContext db = new LogItemsContext();
-
 
         [EnableQuery]
         public List<LogItem> Get(int? pageNumber, int? pageSize, string sortInfo, string name)
@@ -29,60 +28,139 @@ namespace AngularJSDemo.Controllers
             {
                 skip = (pageNumber.Value - 1) * pageSize.Value;
             }
-                        
+            
             if (sortInfo != null)
             {
                 name = name == null ? "" : name;
+
+                var LogLevel = (from c in db.LogItems
+                                where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                select c).OrderBy(d => d.Id).ToList();
+
+                var counter0 = LogLevel.Count;
                 
                 switch (sortInfo)
                 {
                     case "+LogLevel":
-                        var lstRec = (from c in db.LogItems
-                                  where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                   select c).OrderBy(d => d.LogLevel).Skip(skip).Take(pageSize.Value).ToList();
+
+                        var lstRec = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem 
+                                      { 
+                                          Id =c.Id,
+                                          Module =c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel =c.LogLevel,
+                                          UserName= c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter =counter0
+                                      }).OrderBy(d => d.LogLevel).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec;
                         break;
                     case "-LogLevel":
-                        var lstRec1 = (from c in db.LogItems
+                        var lstRec1 = (from c in LogLevel
                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderByDescending(d => d.LogLevel).Skip(skip).Take(pageSize.Value).ToList();
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderByDescending(d => d.LogLevel).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec1;
                         break;
                     case "-UserName":
-                        var lstRec2 = (from c in db.LogItems
+                        var lstRec2 = (from c in LogLevel
                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderByDescending(d => d.UserName).Skip(skip).Take(pageSize.Value).ToList();                        
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderByDescending(d => d.UserName).Skip(skip).Take(pageSize.Value).ToList();                        
                         return lstRec2;
                         break;
                     case "+UserName":
-                        var lstRec3 = (from c in db.LogItems
-                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderBy(d => d.UserName).Skip(skip).Take(pageSize.Value).ToList();
+                        var lstRec3 = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderBy(d => d.UserName).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec3;
                         break;
                     case "+Module":
-                        var lstRec4 = (from c in db.LogItems
-                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderBy(d => d.Module).Skip(skip).Take(pageSize.Value).ToList();
+                        var lstRec4 = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderBy(d => d.Module).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec4;
                         break;
                     case "-Module":
-                        var lstRec5 = (from c in db.LogItems
-                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderByDescending(d => d.Module).Skip(skip).Take(pageSize.Value).ToList();
+                        var lstRec5 = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderByDescending(d => d.Module).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec5;
                         break;
 
                     case "+Id":
-                        var lstRec6 = (from c in db.LogItems
-                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderBy(d => d.Id).Skip(skip).Take(pageSize.Value).ToList();
+                        var lstRec6 = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderBy(d => d.Id).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec6;
                         break;
                     case "-Id":
-                        var lstRec7 = (from c in db.LogItems
-                                       where c.LogLevel.Contains(name) || c.UserName.Contains(name)
-                                       select c).OrderByDescending(d => d.Id).Skip(skip).Take(pageSize.Value).ToList();
+                        var lstRec7 = (from c in LogLevel
+                                      where c.LogLevel.Contains(name) || c.UserName.Contains(name)
+                                      select new LogItem
+                                      {
+                                          Id = c.Id,
+                                          Module = c.Module,
+                                          LoggedOn = c.LoggedOn,
+                                          LogLevel = c.LogLevel,
+                                          UserName = c.UserName,
+                                          Message = c.Message,
+                                          RecordCounter = counter0
+                                      }).OrderByDescending(d => d.Id).Skip(skip).Take(pageSize.Value).ToList();
                         return lstRec7;
                         break;
                 }

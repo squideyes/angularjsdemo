@@ -71,6 +71,9 @@ app.controller('MyCtrl', ['$scope', '$http', function ($scope, $http, $apply) {
             $('#myModal').modal({
                 show: 'true'
             });
+
+
+
             $scope.Module = data.Module;
             $scope.LoggedOn = data.LoggedOn;
             $scope.LogLevel = data.LogLevel;
@@ -80,7 +83,6 @@ app.controller('MyCtrl', ['$scope', '$http', function ($scope, $http, $apply) {
         }).error(function (data, status, headers, config) {
             alert(JSON.stringify(data));
         });
-
     };
 
     $scope.selectGridRow = function () {
@@ -110,10 +112,10 @@ app.controller('MyCtrl', ['$scope', '$http', function ($scope, $http, $apply) {
             url: "/odata/LogItems",
             method: "GET",
             params: p
-        }).success(function (data, status, headers, config) {
-            $scope.totalServerItems = data.totalItems;
+        }).success(function (data, status, headers, config)
+        {
             $scope.items = data.value;
-
+            $scope.totalServerItems = data.value[0].RecordCounter;//data.totalItems;
         }).error(function (data, status, headers, config) {
             alert(JSON.stringify(data));
         });
@@ -125,12 +127,20 @@ app.controller('MyCtrl', ['$scope', '$http', function ($scope, $http, $apply) {
     };
 
     // watches
-    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+    $scope.$watch('pagingOptions', function (newVal, oldVal)
+    {
         if (newVal !== oldVal)
-        {
-            
+        {            
             $scope.refresh();
         }
+
+        //var pagedData = $scope.items.slice((newVal.currentPage - 1) * newVal.pageSize, newVal.currentPage * newVal.pageSize);
+        //$scope.result = pagedData;
+        //$scope.totalServerItems = $scope.items.length;
+        //if (!$scope.$$phase) {
+        //    $scope.$apply();
+        //}
+
     }, true);
 
     $scope.$watch('filterOptions', function (newVal, oldVal)

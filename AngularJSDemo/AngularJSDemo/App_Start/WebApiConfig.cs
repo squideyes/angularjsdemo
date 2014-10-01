@@ -26,11 +26,13 @@ namespace AngularJSDemo
 
             ODataModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<LogItem>("LogItems");
-
+            
+            var model = builder.GetEdmModel();
+            
             config.MapODataServiceRoute(
                 routeName: "ODataRoute",
                 routePrefix: "odata",
-                model: builder.GetEdmModel());
+                model: model);
 
         }
     }
